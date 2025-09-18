@@ -31,12 +31,6 @@ Thumbs.db
 *.log
 logs/
 
-# Runtime
-**/appsettings.Development.json
-**/appsettings.local.json
-**/appsettings.Production.json
-!appsettings.json
-
 # Build outputs
 **/dist/
 **/build/
@@ -78,3 +72,11 @@ jspm_packages/
 .env.test.local
 .env.production.local
 .env.local
+
+# configs
+config/appsettings.Secrets.json
+**/appsettings.Local.json
+
+# User secrets
+**/secrets.json
+**/*.userprefs

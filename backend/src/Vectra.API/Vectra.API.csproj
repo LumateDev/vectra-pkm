@@ -23,4 +23,13 @@
     <ProjectReference Include="..\Vectra.Modules.Notes.Infrastructure\Vectra.Modules.Notes.Infrastructure.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Content Include="..\..\..\config\appsettings.Shared.json" Link="appsettings.Shared.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\..\..\config\appsettings.Secrets.json" Link="appsettings.Secrets.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
 </Project>

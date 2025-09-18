@@ -1,5 +1,6 @@
 
 using Microsoft.OpenApi.Models;
+using Vectra.Shared.Configuration;
 
 namespace Vectra.API
 {
@@ -8,6 +9,28 @@ namespace Vectra.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+
+            // Определяем путь к конфигурационным файлам
+            var configPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "config");
+
+            // Загрузка конфигурации
+            builder.Configuration
+                .SetBasePath(configPath) // Устанавливаем базовый путь к config папке
+                .AddJsonFile("appsettings.Shared.json", optional: false)
+                .AddJsonFile("appsettings.json", optional: true)
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.Secrets.json", optional: true)
+                .AddJsonFile("appsettings.Local.json", optional: true)
+                .SetBasePath(Directory.GetCurrentDirectory()) // Возвращаем базовый путь обратно
+                .AddEnvironmentVariables();
+
+
+            // Регистрация конфигурации из Shared проекта
+            builder.Services.AddVectraConfiguration(builder.Configuration);
+
+            // Получаем настройки для использования
+            var appSettings = builder.Configuration.GetSection(AppSettings.SectionName).Get<AppSettings>();
 
             // Add services to the container.
 
@@ -24,15 +47,15 @@ namespace Vectra.API
                 });
             });
 
+            // Настройка CORS из конфигурации
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowVueFrontend",
-                    policy =>
-                    {
-                        policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
-                              .AllowAnyHeader()
-                              .AllowAnyMethod();
-                    });
+                options.AddPolicy("AllowVueFrontend", policy =>
+                {
+                    policy.WithOrigins(appSettings?.Cors.AllowedOrigins ?? Array.Empty<string>())
+                          .WithMethods(appSettings?.Cors.AllowedMethods ?? new[] { "GET", "POST", "PUT", "DELETE" })
+                          .WithHeaders(appSettings?.Cors.AllowedHeaders ?? new[] { "Content-Type", "Authorization" });
+                });
             });
 
             var app = builder.Build();
