@@ -1,4 +1,3 @@
-
 using Microsoft.OpenApi.Models;
 using Vectra.Shared.Configuration;
 
@@ -10,27 +9,24 @@ namespace Vectra.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
-            // Определяем путь к конфигурационным файлам
-            var configPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "config");
-
-            // Загрузка конфигурации
+            var configPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".configs");
             builder.Configuration
-                .SetBasePath(configPath) // Устанавливаем базовый путь к config папке
-                .AddJsonFile("appsettings.Shared.json", optional: false)
-                .AddJsonFile("appsettings.json", optional: true)
-                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                .SetBasePath(configPath)
+                .AddJsonFile("appsettings.API.json", optional: false)
+                .AddJsonFile($"appsettings.API.{builder.Environment.EnvironmentName}.json", optional: true)
                 .AddJsonFile("appsettings.Secrets.json", optional: true)
-                .AddJsonFile("appsettings.Local.json", optional: true)
-                .SetBasePath(Directory.GetCurrentDirectory()) // Возвращаем базовый путь обратно
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddEnvironmentVariables();
 
-
-            // Регистрация конфигурации из Shared проекта
             builder.Services.AddVectraConfiguration(builder.Configuration);
-
-            // Получаем настройки для использования
             var appSettings = builder.Configuration.GetSection(AppSettings.SectionName).Get<AppSettings>();
+
+            // temp settings log
+            Console.WriteLine($"Environment: {appSettings?.Environment}");
+            Console.WriteLine($"Database Host: {appSettings?.Database?.Host}");
+            Console.WriteLine($"JWT Issuer: {appSettings?.Jwt?.Issuer}");
+            Console.WriteLine($"CORS Origins: {string.Join(", ", appSettings?.Cors?.AllowedOrigins ?? Array.Empty<string>())}");
+            Console.WriteLine($"Connection String: {appSettings?.Database?.GetConnectionString()}");
 
             // Add services to the container.
 
@@ -43,11 +39,11 @@ namespace Vectra.API
                 {
                     Title = "Vectra API",
                     Version = "v1",
-                    Description = "API для системы управления персональными знаниями"
+                    Description = "API    "
                 });
             });
 
-            // Настройка CORS из конфигурации
+            //  CORS  
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowVueFrontend", policy =>
@@ -71,7 +67,7 @@ namespace Vectra.API
             }
             else // Production
             {
-                app.UseHttpsRedirection(); // Включаем Redirect только в Production
+                app.UseHttpsRedirection(); //  Redirect  Production
             }
 
             app.UseCors("AllowVueFrontend");

@@ -5,19 +5,11 @@ VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.API", "src\Vectra.API\Vectra.API.csproj", "{4A6777BF-44E3-48CF-0978-CB996EDF3C3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Identity.Application", "src\Vectra.Modules.Identity.Application\Vectra.Modules.Identity.Application.csproj", "{718BF03C-CCB5-AAB1-EE70-4F89F70509EB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Identity.Domain", "src\Vectra.Modules.Identity.Domain\Vectra.Modules.Identity.Domain.csproj", "{D10C0010-B9EC-51F3-A6CA-5275277F011E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Identity.Infrastructure", "src\Vectra.Modules.Identity.Infrastructure\Vectra.Modules.Identity.Infrastructure.csproj", "{14C49971-6ED1-F26C-488E-42DE9CA495C5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Notes.Application", "src\Vectra.Modules.Notes.Application\Vectra.Modules.Notes.Application.csproj", "{29B4A25A-6E38-19D5-11B6-7955187D5394}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Notes.Domain", "src\Vectra.Modules.Notes.Domain\Vectra.Modules.Notes.Domain.csproj", "{7F3D9595-7A3E-BD6E-F307-3D4A70B94FBA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Notes.Infrastructure", "src\Vectra.Modules.Notes.Infrastructure\Vectra.Modules.Notes.Infrastructure.csproj", "{75ED966F-317C-C0CE-31B7-9B75FCDB8663}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Shared", "src\Vectra.Shared\Vectra.Shared.csproj", "{14E0C188-92B8-838F-5EAB-0AC9891B3E10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Identity", "src\Vectra.Modules.Identity\Vectra.Modules.Identity.csproj", "{D2BA7712-13EB-C99D-2BF0-2F9A595ABB1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Notes", "src\Vectra.Modules.Notes\Vectra.Modules.Notes.csproj", "{510E5FCD-6C23-A13C-C1AE-006EF739A8A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,34 +21,18 @@ Global
 		{4A6777BF-44E3-48CF-0978-CB996EDF3C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A6777BF-44E3-48CF-0978-CB996EDF3C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A6777BF-44E3-48CF-0978-CB996EDF3C3C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{718BF03C-CCB5-AAB1-EE70-4F89F70509EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{718BF03C-CCB5-AAB1-EE70-4F89F70509EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{718BF03C-CCB5-AAB1-EE70-4F89F70509EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{718BF03C-CCB5-AAB1-EE70-4F89F70509EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D10C0010-B9EC-51F3-A6CA-5275277F011E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D10C0010-B9EC-51F3-A6CA-5275277F011E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D10C0010-B9EC-51F3-A6CA-5275277F011E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D10C0010-B9EC-51F3-A6CA-5275277F011E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14C49971-6ED1-F26C-488E-42DE9CA495C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14C49971-6ED1-F26C-488E-42DE9CA495C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14C49971-6ED1-F26C-488E-42DE9CA495C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14C49971-6ED1-F26C-488E-42DE9CA495C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{29B4A25A-6E38-19D5-11B6-7955187D5394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29B4A25A-6E38-19D5-11B6-7955187D5394}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29B4A25A-6E38-19D5-11B6-7955187D5394}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29B4A25A-6E38-19D5-11B6-7955187D5394}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F3D9595-7A3E-BD6E-F307-3D4A70B94FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F3D9595-7A3E-BD6E-F307-3D4A70B94FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F3D9595-7A3E-BD6E-F307-3D4A70B94FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F3D9595-7A3E-BD6E-F307-3D4A70B94FBA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75ED966F-317C-C0CE-31B7-9B75FCDB8663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75ED966F-317C-C0CE-31B7-9B75FCDB8663}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75ED966F-317C-C0CE-31B7-9B75FCDB8663}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75ED966F-317C-C0CE-31B7-9B75FCDB8663}.Release|Any CPU.Build.0 = Release|Any CPU
 		{14E0C188-92B8-838F-5EAB-0AC9891B3E10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{14E0C188-92B8-838F-5EAB-0AC9891B3E10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14E0C188-92B8-838F-5EAB-0AC9891B3E10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14E0C188-92B8-838F-5EAB-0AC9891B3E10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2BA7712-13EB-C99D-2BF0-2F9A595ABB1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2BA7712-13EB-C99D-2BF0-2F9A595ABB1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2BA7712-13EB-C99D-2BF0-2F9A595ABB1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2BA7712-13EB-C99D-2BF0-2F9A595ABB1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{510E5FCD-6C23-A13C-C1AE-006EF739A8A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{510E5FCD-6C23-A13C-C1AE-006EF739A8A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{510E5FCD-6C23-A13C-C1AE-006EF739A8A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{510E5FCD-6C23-A13C-C1AE-006EF739A8A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

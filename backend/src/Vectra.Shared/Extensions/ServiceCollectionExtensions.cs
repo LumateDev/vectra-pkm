@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Vectra.Shared.Configuration;
 
-namespace Microsoft.Extensions.DependencyInjection // ✅ Правильное пространство имен
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class ServiceCollectionExtensions // ✅ Static класс
+    public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddVectraConfiguration( // ✅ Static метод
+        public static IServiceCollection AddVectraConfiguration(
             this IServiceCollection services,
             IConfiguration configuration)
         {

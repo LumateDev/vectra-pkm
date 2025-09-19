@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -16,20 +16,19 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Vectra.Modules.Identity.Application\Vectra.Modules.Identity.Application.csproj" />
-    <ProjectReference Include="..\Vectra.Modules.Identity.Infrastructure\Vectra.Modules.Identity.Infrastructure.csproj" />
-    <ProjectReference Include="..\Vectra.Modules.Notes.Application\Vectra.Modules.Notes.Application.csproj" />
-    <ProjectReference Include="..\Vectra.Modules.Notes.Infrastructure\Vectra.Modules.Notes.Infrastructure.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="..\.configs\appsettings.API.json" Link="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\.configs\appsettings.API.Development.json" Link="appsettings.Development.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="..\..\..\config\appsettings.Shared.json" Link="appsettings.Shared.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="..\..\..\config\appsettings.Secrets.json" Link="appsettings.Secrets.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+	  <ProjectReference Include="..\Vectra.Modules.Identity\Vectra.Modules.Identity.csproj" />
+	  <ProjectReference Include="..\Vectra.Modules.Notes\Vectra.Modules.Notes.csproj" />
+	  <ProjectReference Include="..\Vectra.Shared\Vectra.Shared.csproj" />
 	</ItemGroup>
 
 </Project>
