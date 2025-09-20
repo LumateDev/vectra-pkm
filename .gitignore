@@ -51,6 +51,10 @@ logs/
 **/coverage/
 *.lcov
 
+# Test results
+**/TestResults/
+*.trx
+
 # Dependency directories
 jspm_packages/
 

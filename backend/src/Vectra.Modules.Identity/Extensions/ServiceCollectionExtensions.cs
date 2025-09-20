@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vectra.Modules.Identity.Application.Services;
 using Vectra.Modules.Identity.Domain.Repositories;
 using Vectra.Modules.Identity.Infrastructure.Persistence;
 using Vectra.Modules.Identity.Infrastructure.Repositories;
+using Vectra.Modules.Identity.Infrastructure.Security;
 using Vectra.Shared.Configuration;
 
 namespace Vectra.Modules.Identity.Extensions
@@ -38,7 +40,11 @@ namespace Vectra.Modules.Identity.Extensions
                 .EnableDetailedErrors(databaseSettings.EnableDetailedErrors));
 
 
+            // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
+
+            // Security services
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             return services;
         }
