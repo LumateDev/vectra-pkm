@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using Vectra.Modules.Identity.Extensions;
 using Vectra.Shared.Configuration;
 
 namespace Vectra.API
@@ -27,6 +28,8 @@ namespace Vectra.API
 
             builder.Services.AddVectraConfiguration(builder.Configuration);
             var appSettings = builder.Configuration.GetSection(AppSettings.SectionName).Get<AppSettings>();
+
+            builder.Services.AddIdentityInfrastructure(builder.Configuration);
 
             Console.WriteLine($"Environment: {appSettings?.Environment}");
             Console.WriteLine($"Database Host: {appSettings?.Database?.Host}");

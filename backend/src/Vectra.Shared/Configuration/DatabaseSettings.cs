@@ -13,8 +13,19 @@ namespace Vectra.Shared.Configuration
         public string Name { get; set; } = "vectra";
         public string Username { get; set; } = "admin";
         public string Password { get; set; } = string.Empty;
+        public string ConnectionString { get; set; } = string.Empty;
 
-        public string GetConnectionString() =>
-            $"Host={Host};Port={Port};Database={Name};Username={Username};Password={Password}";
+        // Дополнительные настройки EF Core
+        public bool EnableSensitiveDataLogging { get; set; } = false;
+        public bool EnableDetailedErrors { get; set; } = false;
+        public int CommandTimeout { get; set; } = 30;
+
+        public string GetConnectionString()
+        {
+            if (!string.IsNullOrEmpty(ConnectionString))
+                return ConnectionString;
+
+            return $"Host={Host};Port={Port};Database={Name};Username={Username};Password={Password}";
+        }
     }
 }
