@@ -9,9 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Shared", "src\Vectra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Identity", "src\Vectra.Modules.Identity\Vectra.Modules.Identity.csproj", "{D2BA7712-13EB-C99D-2BF0-2F9A595ABB1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Notes", "src\Vectra.Modules.Notes\Vectra.Modules.Notes.csproj", "{510E5FCD-6C23-A13C-C1AE-006EF739A8A3}"
-EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Documents", "src\Vectra.Modules.Documents\Vectra.Modules.Documents.csproj", "{EF9EE783-DF47-4D8E-9237-28DAB09183E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectra.Modules.Workspaces", "src\Vectra.Modules.Workspaces\Vectra.Modules.Workspaces.csproj", "{60687B83-7B1B-4BDE-925C-4D0939CFCCE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +33,18 @@ Global
 		{D2BA7712-13EB-C99D-2BF0-2F9A595ABB1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2BA7712-13EB-C99D-2BF0-2F9A595ABB1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2BA7712-13EB-C99D-2BF0-2F9A595ABB1C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{510E5FCD-6C23-A13C-C1AE-006EF739A8A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{510E5FCD-6C23-A13C-C1AE-006EF739A8A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{510E5FCD-6C23-A13C-C1AE-006EF739A8A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{510E5FCD-6C23-A13C-C1AE-006EF739A8A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF9EE783-DF47-4D8E-9237-28DAB09183E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF9EE783-DF47-4D8E-9237-28DAB09183E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF9EE783-DF47-4D8E-9237-28DAB09183E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF9EE783-DF47-4D8E-9237-28DAB09183E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60687B83-7B1B-4BDE-925C-4D0939CFCCE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60687B83-7B1B-4BDE-925C-4D0939CFCCE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60687B83-7B1B-4BDE-925C-4D0939CFCCE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60687B83-7B1B-4BDE-925C-4D0939CFCCE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

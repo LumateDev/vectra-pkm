@@ -31,7 +31,8 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Vectra.Modules.Identity\Vectra.Modules.Identity.csproj" />
-	  <ProjectReference Include="..\Vectra.Modules.Notes\Vectra.Modules.Notes.csproj" />
+	  <ProjectReference Include="..\Vectra.Modules.Documents\Vectra.Modules.Documents.csproj" />
+	  <ProjectReference Include="..\Vectra.Modules.Workspaces\Vectra.Modules.Workspaces.csproj" />
 	  <ProjectReference Include="..\Vectra.Shared\Vectra.Shared.csproj" />
 	</ItemGroup>
 

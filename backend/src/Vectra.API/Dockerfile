@@ -15,7 +15,8 @@ WORKDIR /src
 COPY ["backend/src/Vectra.API/Vectra.API.csproj", "backend/src/Vectra.API/"]
 COPY ["backend/src/Vectra.Modules.Identity/Vectra.Modules.Identity.csproj", "backend/src/Vectra.Modules.Identity/"]
 COPY ["backend/src/Vectra.Shared/Vectra.Shared.csproj", "backend/src/Vectra.Shared/"]
-COPY ["backend/src/Vectra.Modules.Notes/Vectra.Modules.Notes.csproj", "backend/src/Vectra.Modules.Notes/"]
+COPY ["backend/src/Vectra.Modules.Documents/Vectra.Modules.Documents.csproj", "backend/src/Vectra.Modules.Documents/"]
+COPY ["backend/src/Vectra.Modules.Workspaces/Vectra.Modules.Workspaces.csproj", "backend/src/Vectra.Modules.Workspaces/"]
 RUN dotnet restore "./backend/src/Vectra.API/Vectra.API.csproj"
 COPY . .
 WORKDIR "/src/backend/src/Vectra.API"
