@@ -11,11 +11,14 @@
 *.nupkg
 .nuget/
 
+
+# Docker laucnh profile for visiaul studio
+!**/backend/launchSettings.json# Docker laucnh profile for visiaul studio
+!**/backend/launchSettings.json
+
 # Docker
-**/.dockerignore
-**/Dockerfile
-**/docker-compose.*.yml
-**/docker-compose.*.yaml
+.docker/
+docker-compose.*.cache
 
 # IDE
 **/.vscode/
@@ -75,7 +78,6 @@ jspm_packages/
 
 # configs
 config/appsettings.Secrets.json
-**/appsettings.Local.json
 backend/src/.configs/appsettings.Secrets.json
 
 # User secrets

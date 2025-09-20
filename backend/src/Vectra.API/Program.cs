@@ -9,19 +9,25 @@ namespace Vectra.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var configPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".configs");
-            builder.Configuration
-                .SetBasePath(configPath)
-                .AddJsonFile("appsettings.API.json", optional: false)
-                .AddJsonFile($"appsettings.API.{builder.Environment.EnvironmentName}.json", optional: true)
-                .AddJsonFile("appsettings.Secrets.json", optional: true)
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddEnvironmentVariables();
+            // FAST MODE WORKAROUND FOR VISUAL STUDIO DOCKER
+            // In normal Docker mode: files are copied to /app (as per Dockerfile)
+            // In VS Fast Mode: bin/Debug/net9.0 is mounted to /app but working directory changes
+            // This detects Fast Mode and adjusts config path accordingly
+            var fastModePath = Path.Combine(Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0");
+            if (Directory.Exists(fastModePath))
+            {
+                builder.Configuration.SetBasePath(fastModePath);
+                builder.Configuration
+                    .AddJsonFile("appsettings.API.json", optional: false)
+                    .AddJsonFile($"appsettings.API.{builder.Environment.EnvironmentName}.json", optional: true)
+                    .AddJsonFile("appsettings.Secrets.json", optional: true);
+            }
+
+            builder.Configuration.AddEnvironmentVariables();
 
             builder.Services.AddVectraConfiguration(builder.Configuration);
             var appSettings = builder.Configuration.GetSection(AppSettings.SectionName).Get<AppSettings>();
 
-            // temp settings log
             Console.WriteLine($"Environment: {appSettings?.Environment}");
             Console.WriteLine($"Database Host: {appSettings?.Database?.Host}");
             Console.WriteLine($"JWT Issuer: {appSettings?.Jwt?.Issuer}");
@@ -29,9 +35,7 @@ namespace Vectra.API
             Console.WriteLine($"Connection String: {appSettings?.Database?.GetConnectionString()}");
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
@@ -39,18 +43,18 @@ namespace Vectra.API
                 {
                     Title = "Vectra API",
                     Version = "v1",
-                    Description = "API    "
+                    Description = "API"
                 });
             });
 
-            //  CORS  
+            // CORS
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowVueFrontend", policy =>
                 {
-                    policy.WithOrigins(appSettings?.Cors.AllowedOrigins ?? Array.Empty<string>())
-                          .WithMethods(appSettings?.Cors.AllowedMethods ?? new[] { "GET", "POST", "PUT", "DELETE" })
-                          .WithHeaders(appSettings?.Cors.AllowedHeaders ?? new[] { "Content-Type", "Authorization" });
+                    policy.WithOrigins(appSettings?.Cors?.AllowedOrigins ?? Array.Empty<string>())
+                          .WithMethods(appSettings?.Cors?.AllowedMethods ?? new[] { "GET", "POST", "PUT", "DELETE" })
+                          .WithHeaders(appSettings?.Cors?.AllowedHeaders ?? new[] { "Content-Type", "Authorization" });
                 });
             });
 

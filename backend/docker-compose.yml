@@ -1,0 +1,6 @@
+services:
+  vectra.api:
+    image: ${DOCKER_REGISTRY-}vectraapi
+    build:
+      context: ..
+      dockerfile: backend/src/Vectra.API/Dockerfile
