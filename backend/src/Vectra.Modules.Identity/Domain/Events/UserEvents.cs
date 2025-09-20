@@ -25,6 +25,9 @@ namespace Vectra.Modules.Identity.Domain.Events
     {
         public DateTime OccurredOn { get; } = DateTime.UtcNow;
     }
-
+    public record RefreshTokenRevokedEvent(Guid TokenId, Guid UserId, string? ReplacedByToken) : IDomainEvent
+    {
+        public DateTime OccurredOn { get; } = DateTime.UtcNow;
+    }
 
 }
