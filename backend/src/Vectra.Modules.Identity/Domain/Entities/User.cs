@@ -1,5 +1,5 @@
 ﻿using Vectra.Modules.Identity.Domain.Enums;
-using Vectra.Shared.Domain.Events;
+using Vectra.Modules.Identity.Domain.Events;
 using Vectra.Shared.Domain.Primitives;
 
 namespace Vectra.Modules.Identity.Domain.Entities

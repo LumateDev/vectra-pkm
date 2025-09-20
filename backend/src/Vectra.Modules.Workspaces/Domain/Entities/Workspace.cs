@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vectra.Modules.Workspaces.Domain.Emuns;
+using Vectra.Modules.Workspaces.Domain.Events;
 using Vectra.Shared.Domain.Primitives;
 
 namespace Vectra.Modules.Workspaces.Domain.Entities
