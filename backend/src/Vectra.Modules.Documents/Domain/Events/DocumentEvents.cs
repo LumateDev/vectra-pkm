@@ -1,6 +1,6 @@
 ﻿using Vectra.Shared.Domain.Primitives;
 
-namespace Vectra.Shared.Domain.Events
+namespace Vectra.Modules.Documents.Domain.Events
 {
     public record DocumentCreatedEvent(Guid DocumentId, Guid WorkspaceId, Guid AuthorId) : IDomainEvent
     {

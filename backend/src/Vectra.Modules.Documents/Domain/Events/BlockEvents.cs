@@ -1,6 +1,6 @@
 ﻿using Vectra.Shared.Domain.Primitives;
 
-namespace Vectra.Shared.Domain.Events
+namespace Vectra.Modules.Documents.Domain.Events
 {
     public record BlockContentUpdatedEvent(Guid BlockId, Guid DocumentId, string NewContent, Guid UpdatedBy) : IDomainEvent
     {
