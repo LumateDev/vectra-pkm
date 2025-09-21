@@ -9,10 +9,11 @@ namespace Vectra.Modules.Identity.Infrastructure.Security
 
         public string HashPassword(string password)
         {
-            if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException("Password cannot be empty", nameof(password));
+            ArgumentNullException.ThrowIfNull(password);
 
-            return BC.HashPassword(password, WorkFactor);
+            return string.IsNullOrWhiteSpace(password)
+                ? throw new ArgumentException("Password cannot be empty", nameof(password))
+                : BC.HashPassword(password, WorkFactor);
         }
 
         public bool VerifyPassword(string password, string passwordHash)
