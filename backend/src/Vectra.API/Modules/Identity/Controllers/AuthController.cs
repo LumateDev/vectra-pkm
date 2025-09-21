@@ -88,7 +88,7 @@ namespace Vectra.API.Modules.Identity.Controllers
             try
             {
                 var ipAddress = GetIpAddress();
-                var result = await _authService.LoginAsync(request);
+                var result = await _authService.LoginAsync(request, ipAddress);
 
                 SetRefreshTokenCookie(result.RefreshToken);
 
@@ -143,10 +143,8 @@ namespace Vectra.API.Modules.Identity.Controllers
                 }
 
                 var ipAddress = GetIpAddress();
-                var result = await _authService.RefreshTokenAsync(new RefreshTokenRequest
-                {
-                    RefreshToken = refreshToken
-                });
+                var result = await _authService.RefreshTokenAsync(
+                    new RefreshTokenRequest { RefreshToken = refreshToken }, ipAddress); 
 
                 SetRefreshTokenCookie(result.RefreshToken);
 
@@ -178,7 +176,7 @@ namespace Vectra.API.Modules.Identity.Controllers
             if (!string.IsNullOrEmpty(refreshToken))
             {
                 var ipAddress = GetIpAddress();
-                await _authService.RevokeTokenAsync(refreshToken);
+                await _authService.RevokeTokenAsync(refreshToken, ipAddress);
             }
 
             Response.Cookies.Delete("refreshToken");

@@ -78,7 +78,7 @@ namespace Vectra.Modules.Identity.Application.Services.Implementation
             };
         }
 
-        public async Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
+        public async Task<LoginResponse> LoginAsync(LoginRequest request, string? ipAddress = null, CancellationToken cancellationToken = default)
         {
             // Валидация
             var validationResult = await _loginValidator.ValidateAsync(request, cancellationToken);
@@ -119,7 +119,7 @@ namespace Vectra.Modules.Identity.Application.Services.Implementation
 
             // Генерируем токены
             var accessToken = await _tokenService.GenerateAccessTokenAsync(user);
-            var refreshToken = await _tokenService.GenerateRefreshTokenAsync(user.Id);
+            var refreshToken = await _tokenService.GenerateRefreshTokenAsync(user.Id, ipAddress);
 
             // Сохраняем refresh token через Unit of Work
             await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -139,9 +139,9 @@ namespace Vectra.Modules.Identity.Application.Services.Implementation
             };
         }
 
-        public async Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken = default)
+        public async Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request, string? ipAddress = null, CancellationToken cancellationToken = default)
         {
-            var (accessToken, refreshToken) = await _tokenService.RefreshTokenAsync(request.RefreshToken);
+            var (accessToken, refreshToken) = await _tokenService.RefreshTokenAsync(request.RefreshToken, ipAddress);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -153,9 +153,9 @@ namespace Vectra.Modules.Identity.Application.Services.Implementation
             };
         }
 
-        public async Task RevokeTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+        public async Task RevokeTokenAsync(string refreshToken, string? ipAddress = null, CancellationToken cancellationToken = default)
         {
-            await _tokenService.RevokeTokenAsync(refreshToken);
+            await _tokenService.RevokeTokenAsync(refreshToken, ipAddress);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
