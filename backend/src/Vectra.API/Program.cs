@@ -1,9 +1,11 @@
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
+using Vectra.API.Extensions;
 using Vectra.API.Services;
 using Vectra.Modules.Identity.Extensions;
 using Vectra.Modules.Identity.Middleware;
@@ -118,6 +120,7 @@ namespace Vectra.API
             });
 
             builder.Services.AddAuthorization();
+            builder.Services.AddApiRateLimiting();
 
             // CORS
             builder.Services.AddCors(options =>
@@ -151,7 +154,7 @@ namespace Vectra.API
 
             app.UseRouting();
             app.UseCors("AllowVueFrontend");
-
+            app.UseIpRateLimiting();
             app.UseAuthentication();
             app.UseMiddleware<JwtMiddleware>();
             app.UseAuthorization();
