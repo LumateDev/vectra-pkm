@@ -9,7 +9,8 @@ namespace Vectra.Modules.Identity.Application.Services
         Task<RefreshToken> GenerateRefreshTokenAsync(Guid userId, string? ipAddress = null);
         Task<(string AccessToken, RefreshToken RefreshToken)> RefreshTokenAsync(string refreshToken, string? ipAddress = null);
         Task RevokeTokenAsync(string refreshToken, string? ipAddress = null);
-        Task RevokeAllTokensForUserAsync(Guid userId, string? ipAddress = null); // Новый метод
+        Task RevokeAllTokensForUserAsync(Guid userId, string? ipAddress = null);
         ClaimsPrincipal? ValidateToken(string token);
+        Task BlacklistTokenAsync(string jti, DateTime expiresAt, Guid userId, string? reason = null);
     }
 }

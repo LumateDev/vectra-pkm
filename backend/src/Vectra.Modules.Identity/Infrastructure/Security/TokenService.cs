@@ -1,14 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Vectra.Modules.Identity.Application.Exceptions;
 using Vectra.Modules.Identity.Application.Services;
 using Vectra.Modules.Identity.Domain.Entities;
@@ -21,6 +17,7 @@ namespace Vectra.Modules.Identity.Infrastructure.Security
     {
         private readonly JwtSettings _jwtSettings;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IBlacklistedTokenRepository _blacklistedTokenRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<TokenService> _logger;
         private readonly JwtSecurityTokenHandler _tokenHandler;
@@ -31,13 +28,15 @@ namespace Vectra.Modules.Identity.Infrastructure.Security
             IOptions<JwtSettings> jwtSettings,
             IRefreshTokenRepository refreshTokenRepository,
             IUnitOfWork unitOfWork,
-            ILogger<TokenService> logger)
+            ILogger<TokenService> logger,
+            IBlacklistedTokenRepository blacklistedTokenRepository)
         {
             _jwtSettings = jwtSettings.Value;
             _refreshTokenRepository = refreshTokenRepository;
             _unitOfWork = unitOfWork;
             _logger = logger;
             _tokenHandler = new JwtSecurityTokenHandler();
+            _blacklistedTokenRepository = blacklistedTokenRepository;
         }
 
         public Task<string> GenerateAccessTokenAsync(User user)
@@ -187,6 +186,14 @@ namespace Vectra.Modules.Identity.Infrastructure.Security
                 if (!IsJwtWithValidSecurityAlgorithm(validatedToken))
                     return null;
 
+                var jti = principal.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+                if (!string.IsNullOrEmpty(jti) &&
+                    _blacklistedTokenRepository.IsBlacklistedAsync(jti).GetAwaiter().GetResult())
+                {
+                    _logger.LogDebug("Token {Jti} is blacklisted", jti);
+                    return null;
+                }
+
                 return principal;
             }
             catch (Exception ex)
@@ -241,6 +248,14 @@ namespace Vectra.Modules.Identity.Infrastructure.Security
             return validatedToken is JwtSecurityToken jwtSecurityToken &&
                    jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
                        StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public async Task BlacklistTokenAsync(string jti, DateTime expiresAt, Guid userId, string? reason = null)
+        {
+            var blacklistedToken = new BlacklistedToken(jti, expiresAt, userId, reason);
+            await _blacklistedTokenRepository.AddAsync(blacklistedToken);
+            _logger.LogInformation("Token {Jti} blacklisted for user {UserId}. Reason: {Reason}",
+                jti, userId, reason ?? "Not specified");
         }
     }
 }

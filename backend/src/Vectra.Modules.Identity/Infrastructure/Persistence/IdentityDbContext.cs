@@ -7,6 +7,7 @@ namespace Vectra.Modules.Identity.Infrastructure.Persistence
     {
         public DbSet<User> Users => Set<User>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<BlacklistedToken> BlacklistedTokens => Set<BlacklistedToken>();
 
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
             : base(options)

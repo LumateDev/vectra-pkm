@@ -39,7 +39,9 @@ namespace Vectra.Modules.Identity.Extensions
                 .EnableSensitiveDataLogging(databaseSettings.EnableSensitiveDataLogging)
                 .EnableDetailedErrors(databaseSettings.EnableDetailedErrors));
 
-           
+            // HttpContextAccessor
+            services.AddHttpContextAccessor();
+
             // Validators
             services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
             services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
@@ -57,6 +59,7 @@ namespace Vectra.Modules.Identity.Extensions
             // Security services
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IBlacklistedTokenRepository, BlacklistedTokenRepository>();
 
             // Background services
             services.AddHostedService<TokenCleanupService>();

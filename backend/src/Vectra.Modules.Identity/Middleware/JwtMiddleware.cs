@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Vectra.Modules.Identity.Application.Services;
+using Vectra.Modules.Identity.Domain.Repositories;
 
 namespace Vectra.Modules.Identity.Middleware
 {
@@ -26,10 +23,8 @@ namespace Vectra.Modules.Identity.Middleware
             var token = context.Request.Headers["Authorization"]
                 .FirstOrDefault()?.Split(" ").Last();
 
-            if (token != null)
-            {
+            if (!string.IsNullOrEmpty(token))
                 await AttachUserToContext(context, token);
-            }
 
             await _next(context);
         }
@@ -40,19 +35,24 @@ namespace Vectra.Modules.Identity.Middleware
             {
                 using var scope = _serviceProvider.CreateScope();
                 var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
+                var blacklistedRepo = scope.ServiceProvider.GetRequiredService<IBlacklistedTokenRepository>();
 
                 var principal = tokenService.ValidateToken(token);
-                if (principal != null)
-                {
-                    context.User = principal;
+                if (principal == null) return;
 
-                    // Опционально: можно добавить пользователя в Items для быстрого доступа
-                    var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                    if (Guid.TryParse(userId, out var userGuid))
-                    {
-                        context.Items["UserId"] = userGuid;
-                    }
+                // blacklist check
+                var jti = principal.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+                if (!string.IsNullOrEmpty(jti) &&
+                    await blacklistedRepo.IsBlacklistedAsync(jti))
+                {
+                    // token revoke
+                    return;
                 }
+                
+                context.User = principal;
+
+                if (Guid.TryParse(principal.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var userGuid))
+                    context.Items["UserId"] = userGuid;
             }
             catch
             {

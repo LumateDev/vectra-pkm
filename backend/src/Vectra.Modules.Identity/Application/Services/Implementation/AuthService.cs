@@ -1,4 +1,7 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using Vectra.Modules.Identity.Application.DTOs.Requests;
 using Vectra.Modules.Identity.Application.DTOs.Responses;
@@ -17,6 +20,7 @@ namespace Vectra.Modules.Identity.Application.Services.Implementation
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<RegisterRequest> _registerValidator;
         private readonly IValidator<LoginRequest> _loginValidator;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         // Email regex pattern
         private static readonly Regex EmailRegex = new(
@@ -29,7 +33,8 @@ namespace Vectra.Modules.Identity.Application.Services.Implementation
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
             IValidator<RegisterRequest> registerValidator,
-            IValidator<LoginRequest> loginValidator)
+            IValidator<LoginRequest> loginValidator,
+            IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
@@ -37,6 +42,7 @@ namespace Vectra.Modules.Identity.Application.Services.Implementation
             _unitOfWork = unitOfWork;
             _registerValidator = registerValidator;
             _loginValidator = loginValidator;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
@@ -156,6 +162,22 @@ namespace Vectra.Modules.Identity.Application.Services.Implementation
         public async Task RevokeTokenAsync(string refreshToken, string? ipAddress = null, CancellationToken cancellationToken = default)
         {
             await _tokenService.RevokeTokenAsync(refreshToken, ipAddress);
+
+            // Если есть текущий access token - добавляем в blacklist
+            var currentUser = _httpContextAccessor.HttpContext?.User;
+            if (currentUser?.Identity?.IsAuthenticated == true)
+            {
+                var jti = currentUser.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+                var exp = currentUser.FindFirst(JwtRegisteredClaimNames.Exp)?.Value;
+                var userId = currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (!string.IsNullOrEmpty(jti) && !string.IsNullOrEmpty(exp) && Guid.TryParse(userId, out var userGuid))
+                {
+                    var expiresAt = DateTimeOffset.FromUnixTimeSeconds(long.Parse(exp)).UtcDateTime;
+                    await _tokenService.BlacklistTokenAsync(jti, expiresAt, userGuid, "User logout");
+                }
+            }
+
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 

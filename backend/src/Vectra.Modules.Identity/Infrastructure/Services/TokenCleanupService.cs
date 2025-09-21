@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Vectra.Modules.Identity.Domain.Repositories;
 
 namespace Vectra.Modules.Identity.Infrastructure.Services
@@ -47,20 +42,27 @@ namespace Vectra.Modules.Identity.Infrastructure.Services
         {
             using var scope = _serviceProvider.CreateScope();
             var refreshTokenRepository = scope.ServiceProvider.GetRequiredService<IRefreshTokenRepository>();
+            var blacklistedTokenRepository = scope.ServiceProvider.GetRequiredService<IBlacklistedTokenRepository>();
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-            var expiredTokens = await refreshTokenRepository.GetExpiredTokensAsync(cancellationToken);
-
-            if (expiredTokens.Any())
+            var expiredRefreshTokens = await refreshTokenRepository.GetExpiredTokensAsync(cancellationToken);
+            if (expiredRefreshTokens.Any())
             {
-                refreshTokenRepository.RemoveRange(expiredTokens);
-                var removed = await unitOfWork.SaveChangesAsync(cancellationToken);
-
-                _logger.LogInformation("Removed {Count} expired refresh tokens", removed);
+                refreshTokenRepository.RemoveRange(expiredRefreshTokens);
+                _logger.LogInformation("Removing {Count} expired refresh tokens", expiredRefreshTokens.Count);
             }
-            else
+
+            var expiredBlacklistedTokens = await blacklistedTokenRepository.GetExpiredTokensAsync(cancellationToken);
+            if (expiredBlacklistedTokens.Any())
             {
-                _logger.LogDebug("No expired tokens found during cleanup");
+                blacklistedTokenRepository.RemoveRange(expiredBlacklistedTokens);
+                _logger.LogInformation("Removing {Count} expired blacklisted tokens", expiredBlacklistedTokens.Count);
+            }
+
+            var totalRemoved = await unitOfWork.SaveChangesAsync(cancellationToken);
+            if (totalRemoved > 0)
+            {
+                _logger.LogInformation("Total {Count} expired tokens removed", totalRemoved);
             }
         }
     }
