@@ -1,16 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Vectra.Modules.Identity.Application.DTOs.Requests;
 using Vectra.Modules.Identity.Application.Services;
+using Vectra.Modules.Identity.Application.Services.Implementation;
+using Vectra.Modules.Identity.Application.Validators;
 using Vectra.Modules.Identity.Domain.Repositories;
 using Vectra.Modules.Identity.Infrastructure.Persistence;
 using Vectra.Modules.Identity.Infrastructure.Repositories;
 using Vectra.Modules.Identity.Infrastructure.Security;
+using Vectra.Modules.Identity.Infrastructure.Services;
 using Vectra.Shared.Configuration;
 
 namespace Vectra.Modules.Identity.Extensions
@@ -39,12 +39,27 @@ namespace Vectra.Modules.Identity.Extensions
                 .EnableSensitiveDataLogging(databaseSettings.EnableSensitiveDataLogging)
                 .EnableDetailedErrors(databaseSettings.EnableDetailedErrors));
 
+           
+            // Validators
+            services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
+            services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
+            // Unit of Work
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Services
+            services.AddScoped<IAuthService, AuthService>();
 
             // Security services
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<ITokenService, TokenService>();
+
+            // Background services
+            services.AddHostedService<TokenCleanupService>();
 
             return services;
         }
