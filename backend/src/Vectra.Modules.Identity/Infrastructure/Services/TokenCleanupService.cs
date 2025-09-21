@@ -17,6 +17,10 @@ namespace Vectra.Modules.Identity.Infrastructure.Services
             _logger = logger;
         }
 
+
+        public Task StartManualAsync(CancellationToken cancellationToken = default)
+        => base.StartAsync(cancellationToken);
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Token Cleanup Service started");

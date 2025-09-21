@@ -7,11 +7,15 @@ using Vectra.Modules.Identity.Application.Services;
 using Vectra.Modules.Identity.Application.Services.Implementation;
 using Vectra.Modules.Identity.Application.Validators;
 using Vectra.Modules.Identity.Domain.Repositories;
+using Vectra.Modules.Identity.Infrastructure.Events;
 using Vectra.Modules.Identity.Infrastructure.Persistence;
 using Vectra.Modules.Identity.Infrastructure.Repositories;
 using Vectra.Modules.Identity.Infrastructure.Security;
 using Vectra.Modules.Identity.Infrastructure.Services;
 using Vectra.Shared.Configuration;
+using Vectra.Shared.Domain.Events;
+using Vectra.Shared.Domain.Primitives;
+using Vectra.Shared.Infrastructure.Events;
 
 namespace Vectra.Modules.Identity.Extensions
 {
@@ -62,7 +66,10 @@ namespace Vectra.Modules.Identity.Extensions
             services.AddScoped<IBlacklistedTokenRepository, BlacklistedTokenRepository>();
 
             // Background services
-            services.AddHostedService<TokenCleanupService>();
+            services.AddSingleton<IDomainEventPublisher, DomainEventPublisher>();
+            services.AddScoped<IDomainEventHandler<DatabaseReadyEvent>, DatabaseReadyEventHandler>();
+            services.AddSingleton<TokenCleanupService>();
+
 
             return services;
         }

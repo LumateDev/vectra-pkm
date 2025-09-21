@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Vectra.Modules.Identity.Infrastructure.Persistence;
+using Vectra.Shared.Domain.Events;
+using Vectra.Shared.Infrastructure.Events;
 
 namespace Vectra.API.Services
 {
@@ -31,6 +33,8 @@ namespace Vectra.API.Services
                 // TODO: Добавить другие контексты когда будут готовы
                 // var documentsContext = scope.ServiceProvider.GetRequiredService<DocumentsDbContext>();
                 // await MigrateContextAsync(documentsContext, "Documents", cancellationToken);
+                var publisher = scope.ServiceProvider.GetRequiredService<IDomainEventPublisher>();
+                await publisher.PublishAsync(new DatabaseReadyEvent(), cancellationToken);
 
                 _logger.LogInformation("Database migration completed successfully");
             }
