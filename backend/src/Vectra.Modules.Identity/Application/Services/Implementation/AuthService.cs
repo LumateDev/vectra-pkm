@@ -185,5 +185,22 @@ namespace Vectra.Modules.Identity.Application.Services.Implementation
         {
             return EmailRegex.IsMatch(input);
         }
+
+        public async Task<UserDto?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken = default)
+        {
+            var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new UserDto
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Username = user.Username,
+                Role = user.Role.ToString()
+            };
+        }
     }
 }

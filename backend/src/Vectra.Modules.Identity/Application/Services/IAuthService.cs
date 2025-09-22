@@ -9,5 +9,6 @@ namespace Vectra.Modules.Identity.Application.Services
         Task<LoginResponse> LoginAsync(LoginRequest request, string? ipAddress = null, CancellationToken cancellationToken = default);
         Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request, string? ipAddress = null, CancellationToken cancellationToken = default);
         Task RevokeTokenAsync(string refreshToken, string? ipAddress = null, CancellationToken cancellationToken = default);
+        Task <UserDto?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken = default);
     }
 }

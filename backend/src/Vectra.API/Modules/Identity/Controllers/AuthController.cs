@@ -202,14 +202,14 @@ namespace Vectra.API.Modules.Identity.Controllers
                 return Unauthorized();
             }
 
-            // TODO: Implement GetUserById in AuthService or create UserService
-            return Ok(new UserDto
+            var user = await _authService.GetUserByIdAsync(Guid.Parse(userId));
+            if (user == null)
             {
-                Id = Guid.Parse(userId),
-                Email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "",
-                Username = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "",
-                Role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? ""
-            });
+                return NotFound();
+            }
+
+            return Ok(user);
+           
         }
 
         private void SetRefreshTokenCookie(string refreshToken)
