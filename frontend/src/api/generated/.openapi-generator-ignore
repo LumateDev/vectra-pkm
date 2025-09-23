@@ -1,0 +1,19 @@
+# OpenAPI Generator Ignore
+
+# Временные файлы генератора
+.openapi-generator/
+.openapi-generator-ignore
+
+# Служебные скрипты и файлы
+git_push.sh
+.npmignore
+
+# Документация
+docs/
+
+# Мусор(для меня)
+tsconfig.json
+tsconfig.esm.json
+package.json
+README.md
+.gitignore

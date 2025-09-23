@@ -1,0 +1,18 @@
+{
+  "generatorName": "typescript-axios",
+  "outputDir": "./src/api/generated",
+  "inputSpec": "http://localhost:8080/swagger/v1/swagger.json",
+  "additionalProperties": {
+    "npmName": "vectra-api-client",
+    "npmVersion": "1.0.0",
+    "supportsES6": true,
+    "withSeparateModelsAndApi": true,
+    "apiPackage": "api",
+    "modelPackage": "models",
+    "useSingleRequestParameter": true,
+    "useAxios": true,
+    "withInterfaces": true,
+    "withoutRuntimeChecks": false,
+    "useObjectParameters": false
+  }
+}

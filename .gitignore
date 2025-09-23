@@ -47,6 +47,9 @@ logs/
 **/.pnpm-debug.log*
 **/lerna-debug.log*
 
+# OpenAPI generator cache
+**/.openapi-generator/
+
 # Coverage
 **/coverage/
 *.lcov
